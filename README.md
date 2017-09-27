@@ -34,7 +34,7 @@ test:
 
 ## Example `.gitlab-ci.yml` with visual tests in emulator and recording of the screen.
 
-```
+```yml
 image: jerbob92/gitlab-ci-android:latest
 
 stages:
