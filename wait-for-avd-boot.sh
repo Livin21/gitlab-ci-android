@@ -1,12 +1,38 @@
 #!/usr/bin/env bash
 
-OUT=`/sdk/platform-tools/adb shell getprop init.svc.bootanim`
-RES="stopped"
+#OUT=`/sdk/platform-tools/adb shell getprop init.svc.bootanim`
+#RES="stopped"
 
-while [[ ${OUT:0:7}  != 'stopped' ]]; do
-		OUT=`/sdk/platform-tools/adb shell getprop init.svc.bootanim`
-		echo 'Waiting for emulator to fully boot...'
-		sleep 5
+#while [[ ${OUT:0:7}  != 'stopped' ]]; do
+#		OUT=`/sdk/platform-tools/adb shell getprop init.svc.bootanim`
+#		echo 'Waiting for emulator to fully boot...'
+#		sleep 5
+#done
+
+#echo "Emulator booted!"
+
+#!/bin/bash
+
+# Originally written by Ralf Kistner <ralf@embarkmobile.com>, but placed in the public domain
+
+set +e
+
+bootanim=""
+failcounter=0
+timeout_in_sec=360
+
+until [[ "$bootanim" =~ "stopped" ]]; do
+  bootanim=`adb -e shell getprop init.svc.bootanim 2>&1 &`
+  if [[ "$bootanim" =~ "device not found" || "$bootanim" =~ "device offline"
+    || "$bootanim" =~ "running" ]]; then
+    let "failcounter += 1"
+    echo "Waiting for emulator to start"
+    if [[ $failcounter -gt timeout_in_sec ]]; then
+      echo "Timeout ($timeout_in_sec seconds) reached; failed to start emulator"
+      exit 1
+    fi
+  fi
+  sleep 1
 done
 
-echo "Emulator booted!"
+echo "Emulator is ready"

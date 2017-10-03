@@ -18,8 +18,6 @@ ENV PATH "$PATH:${ANDROID_HOME}/tools"
 ENV DEBIAN_FRONTEND noninteractive
 
 # Accept License
-
-# Constraint Layout / [Solver for ConstraintLayout 1.0.0-alpha8, ConstraintLayout for Android 1.0.0-alpha8]
 RUN mkdir -p $ANDROID_HOME/licenses/
 RUN echo "8933bad161af4178b1185d1a37fbf41ea5269c55" > $ANDROID_HOME/licenses/android-sdk-license
 
@@ -53,8 +51,8 @@ RUN wget -nv https://dl.google.com/android/repository/sdk-tools-linux-${VERSION_
 RUN wget -nv https://pypi.python.org/packages/1e/8e/40c71faa24e19dab555eeb25d6c07efbc503e98b0344f0b4c3131f59947f/vnc2flv-20100207.tar.gz && tar -zxvf vnc2flv-20100207.tar.gz && rm vnc2flv-20100207.tar.gz && \
     cd vnc2flv-20100207 && ln -s /usr/bin/python2.7 /usr/bin/python && python setup.py install
 
-RUN mkdir /sdk/tools/keymaps && \
-    touch /sdk/tools/keymaps/en-us
+RUN mkdir ${ANDROID_HOME}/tools/keymaps && \
+    touch ${ANDROID_HOME}/tools/keymaps/en-us
 
 RUN mkdir /helpers
 
